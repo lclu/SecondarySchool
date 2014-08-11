@@ -6,14 +6,14 @@ public class Course {
 
 	/** Attributes */
 	private String name;
-	private String id;
-	private String start;
-	private String end;
-	public Map <Integer, Student> students;
+	private String id; //course id
+	private int start; //date start course
+	private int end; //date end course
+	public Map <Integer, Student> students; //students attending
 	
 	
 	/** Constructor */
-	public Course(String na, String idIn, String st, String en) {
+	public Course(String na, String idIn, int st, int en) {
 		name = na;
 		id = idIn;
 		start = st;
@@ -31,16 +31,20 @@ public class Course {
 	
 	public String getId() { return id; }
 	
-	public void setStart(String startIn) { start = startIn; }
+	public void setStart(int startIn) { start = startIn; }
 	
-	public String getStart() { return start; }
+	public int getStart() { return start; }
 	
-	public void setEnd(String endIn) { end = endIn; }
+	public void setEnd(int endIn) { end = endIn; }
 	
-	public String getEnd() { return end; }
+	public int getEnd() { return end; }
 	
-	public boolean addStudent(Student studentIn) {
+	public boolean enroll(Student studentIn) {
 		Integer keyIn = studentIn.getNumber();
+		
+		if (studentIn.getStart() > start) {
+			return false;
+		}
 		
 		if (students.containsKey(keyIn)) {
 			return false;
@@ -50,7 +54,7 @@ public class Course {
 		return true;
 	}
 	
-	public boolean removeStudent(Student studentIn) {
+	public boolean withdraw(Student studentIn) {
 		if (students.remove(studentIn.getNumber()) != null) {
 			studentIn.courses.remove(getId());
 			return true;
@@ -89,7 +93,7 @@ public class Course {
 	}
 	
 	public String toString() {
-		String s = getId() + ", " + getName() + "\n" + "Students:" + "\n";
+		String s = name + " profile: \n" + getId() + ", " + getName() + "\n" + "Students:" + "\n";
 		Set<Integer> keys = students.keySet();
 		
 		for (Integer number : keys) {

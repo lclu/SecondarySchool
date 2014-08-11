@@ -5,10 +5,10 @@ import java.util.*;
 public class Student {
 
 	/** Attributes */
-	private String name;
-	private Integer number;
-	private int start;
-	public Map <String, Course> courses;
+	private String name; 
+	private Integer number; //studentid
+	private int start; //date start schoolcareer
+	public Map <String, Course> courses; //attending courses
 	
 	
 	/** Constructor */
@@ -33,20 +33,26 @@ public class Student {
 	
 	public int getStart() { return start; }
 	
-	public boolean addCourse(Course courseIn) {
+	public boolean enroll(Course courseIn) {
 		String keyIn = courseIn.getId();
 		
+		//check if course is given at the same time student is attending school
+		if (courseIn.getStart() < start) {
+			return false;
+		}
+		
+		//check if already following course
 		if (courses.containsKey(keyIn)) {
 			return false;
 		}
-		courses.put(keyIn, courseIn);
-		courseIn.students.put(getNumber(), this);
+		courses.put(keyIn, courseIn); //add course to student's list
+		courseIn.students.put(getNumber(), this); //add student to course's list
 		return true;
 	}
 	
-	public boolean removeCourse(Course courseIn) {
-		if (courses.remove(courseIn.getId()) != null) {
-			courseIn.students.remove(getNumber());
+	public boolean withdraw(Course courseIn) {
+		if (courses.remove(courseIn.getId()) != null) { //remove course from student's list succesful
+			courseIn.students.remove(getNumber()); //remove student from course's list
 			return true;
 		}
 		return false;
@@ -83,7 +89,7 @@ public class Student {
 	}
 	
 	public String toString() {
-		String s = getNumber() + ", " + getName() + "\n" + "Courses:" + "\n";
+		String s = name + " profile: \n" + getNumber() + ", " + getName() + "\n" + "Courses:" + "\n";
 		Set<String> keys = courses.keySet();
 		
 		for (String id : keys) {
