@@ -3,8 +3,8 @@ package extra_assignment;
 public class SchoolSystem {
 	
 	/** Attributes */
-	 AvlTree students;
-	 AvlTree courses;
+	private AvlTree students;
+	private AvlTree courses;
 	
 	/** Constructor */
 	public SchoolSystem() {
@@ -13,14 +13,6 @@ public class SchoolSystem {
 	}
 	
 	/** Methods */
-	
-	public boolean addStudent(Student v) {
-		
-		if (students.insert(v.getNumber(), v)) {
-			return true;
-		}
-		return false;
-	}
 	
 	public String isEmpty() {
 		if (students.isEmpty()) {
@@ -40,16 +32,23 @@ public class SchoolSystem {
 		courses.makeEmpty();
 	}
 	
+	public boolean addStudent(Student v) {
+		
+		if (students.insert(v.getNumber(), v)) {
+			return true;
+		}
+		return false;
+	}
 	
 	public boolean addCourse(Course v) {
 		return courses.insert(v.getId(), v);
 	}
 	
-	public Object removeStudent(Student v) {
+	public boolean removeStudent(Student v) {
 		return (students.remove(v.getNumber()).getValue() instanceof Student);
 	}
 	
-	public Object removeCourse(Course v) {
+	public boolean removeCourse(Course v) {
 		return (courses.remove(v.getId()).getValue() instanceof Course);
 	}
 	

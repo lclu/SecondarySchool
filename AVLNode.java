@@ -1,20 +1,20 @@
 package extra_assignment;
 
-public class AVLNode {
+public class AvlNode {
 	
 	/** Attributes */
 	private Object key;
 	private Object value;
-	private AVLNode parent;
-	private AVLNode left;
-	private AVLNode right;
+	private AvlNode parent;
+	private AvlNode left;
+	private AvlNode right;
 	
 	
 	/** Constructor */
-	public AVLNode (Object k, Object v, AVLNode lt, AVLNode rt) {
+	public AvlNode (Object k, Object v, AvlNode pt, AvlNode lt, AvlNode rt) {
 		key = k;
 		value = v;
-		//parent = pt;
+		parent = pt;
 		left = lt;
 		right = rt;
 	}
@@ -29,17 +29,23 @@ public class AVLNode {
 	
 	public Object getValue() { return value; }
 	
-	public void setParent(AVLNode pt) { parent = pt; }
+	public void setParent(AvlNode pt) { parent = pt; }
 	
-	public AVLNode getParent() { return parent; }
+	public AvlNode getParent() { return parent; }
 	
-	public void setLeft(AVLNode lt) { left = lt; }
+	public void setLeft(AvlNode lt) { 
+		left = lt;
+		lt.setParent(this);
+		}
 	
-	public AVLNode getLeft() { return left; }
+	public AvlNode getLeft() { return left; }
 	
-	public void setRight(AVLNode lt) { right = lt; }
+	public void setRight(AvlNode rt) { 
+		right = rt;
+		rt.setParent(this);
+		}
 	
-	public AVLNode getRight() { return right; }
+	public AvlNode getRight() { return right; }
 	
 	public String toString() {
 		return "<AVLNode(" + key + ")>";

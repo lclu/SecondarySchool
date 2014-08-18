@@ -3,7 +3,7 @@ package extra_assignment;
 public class AvlTree {
 
 	/** Attributes */
-	public AVLNode root;
+	private AvlNode root;
 	
 	
 	/** 
@@ -31,7 +31,7 @@ public class AvlTree {
 	/** 
 	 * Return root of the tree 
 	 */
-	public AVLNode getRoot() {
+	public AvlNode getRoot() {
 		return root;
 	}
 	
@@ -41,7 +41,7 @@ public class AvlTree {
 	* @param v the value of the node
 	*/
 	public boolean insert(Object k, Object v) {
-		AVLNode n = new AVLNode(k, v, null, null);
+		AvlNode n = new AvlNode(k, v, null, null, null);
 		
 		if (v instanceof Student) {
 			root = insertStudent(n, root);
@@ -61,16 +61,16 @@ public class AvlTree {
 	* @param n the node that roots the subtree
 	* @return the inserted node
 	*/
-	private AVLNode insertStudent(AVLNode m, AVLNode n) {
-		if (n == null) {
+	private AvlNode insertStudent(AvlNode m, AvlNode n) {
+		if (n == null) { //tree is empty
 			n = m;
 		}
 		
 		else if ((int)m.getKey() < (int)n.getKey()) {
 			
-			n.setLeft(insertStudent(m,n.getLeft()));
+			n.setLeft(insertStudent(m,n.getLeft())); //recursion
 			m.setParent(n);
-			if (height(n.getLeft()) - height(n.getRight()) == 2) {
+			if (height(n.getLeft()) - height(n.getRight()) == 2) { //check if rebalance needed
 				if ((int)m.getKey() < (int)n.getLeft().getKey()) {
 					n = singleLeftChild(n);
 				}
@@ -82,9 +82,9 @@ public class AvlTree {
 		
 		else if ((int)m.getKey() > (int)n.getKey()) {
 			
-			n.setRight(insertStudent(m,n.getRight()));
+			n.setRight(insertStudent(m,n.getRight())); //recursion
 			m.setParent(n);
-			if (height(n.getRight()) - height(n.getLeft()) == 2) {
+			if (height(n.getRight()) - height(n.getLeft()) == 2) { //check if rebalance needed
 				if ((int)m.getKey() > (int)n.getRight().getKey()) {
 					n = singleRightChild(n);
 				}
@@ -102,7 +102,7 @@ public class AvlTree {
 	* @param n the node that roots the subtree
 	* @return the inserted node
 	*/
-	private AVLNode insertCourse(AVLNode m, AVLNode n) {
+	private AvlNode insertCourse(AvlNode m, AvlNode n) {
 		if (n == null) {
 			n = m;
 		}
@@ -152,10 +152,10 @@ public class AvlTree {
 	* @param k the key of the node
 	* @return the deleted node
 	*/
-	public AVLNode remove(Object k) {
-		
+	public AvlNode remove(Object k) {
+
 		if (k instanceof Integer) {
-			AVLNode n = searchStudent((Integer)k, root);
+			AvlNode n = searchStudent((Integer)k, root);
 			if (n != null) {
 				root = removeStudent(n, root);
 				return n;
@@ -163,12 +163,11 @@ public class AvlTree {
 		}
 
 		if (k instanceof String) {
-			AVLNode n = searchCourse((String)k, root);
+			AvlNode n = searchCourse((String)k, root);
 			if (n != null) {
 				root = removeCourse(n, root);
 				return n;
 			}
-
 		}
 		return null;
 	}
@@ -179,7 +178,7 @@ public class AvlTree {
 	* @param n the node that roots the subtree
 	* @return the root of the new tree
 	*/
-	private AVLNode removeStudent(AVLNode m, AVLNode n) {
+	private AvlNode removeStudent(AvlNode m, AvlNode n) {
 
 		if (n == null) {
 			return null;
@@ -204,7 +203,7 @@ public class AvlTree {
 	* @param n the node that roots the subtree
 	* @return the root of the new tree
 	*/
-	private AVLNode removeCourse(AVLNode m, AVLNode n) {
+	private AvlNode removeCourse(AvlNode m, AvlNode n) {
 		if (n == null) {
 			return null;
 		}
@@ -231,7 +230,7 @@ public class AvlTree {
 	* @param n the node to remove
 	* @return the root of the new tree
 	*/
-	private AVLNode removeFound(AVLNode n) {
+	private AvlNode removeFound(AvlNode n) {
 		// n has 0 children
 		if (n.getLeft() == null && n.getRight() == null) {
 			return null;
@@ -247,13 +246,13 @@ public class AvlTree {
 		}
 		// n has 2 children
 		else {
-			AVLNode temp = treeMinimum(n.getRight());
+			AvlNode temp = treeMinimum(n.getRight());
 			n.setKey(temp.getKey());
 			n.setValue(temp.getValue());
 			n.setRight(removeStudent(n.getRight(), temp));
 		}
 	
-/*		// check balance tree
+		// check balance tree
 		int difference = (height(root.getRight()) - height(root.getLeft()));
 		
 		if ((difference > 1) && (getBalance(root.getLeft()) >= 0)) {
@@ -270,15 +269,84 @@ public class AvlTree {
 				
 		if ((difference < -1) && (getBalance(root.getRight()) < 0)) {
 			return doubleLeftChild(root);
-		}*/
+		}
 		return null; 
 	}
 	
 	/**
+	 * Search for a course/student in the tree
+*/
+	public boolean search(Object k) {
+	if (k instanceof Integer) {
+		if (searchStudent((Integer)k, root) != null) {
+			return true;
+		}
+	}
+
+	if (k instanceof String) {
+		if (searchCourse((String)k, root) != null) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ 	* Internal method to find a student in the tree with recursion
+* @param k the id of the student
+* @param n the AVLNode to compare with
+*/
+	private AvlNode searchStudent(Integer k, AvlNode n) {
+	AvlNode found = null;
+	while ((n != null)) {
+		Integer key = (Integer)n.getKey();
+		if (k < key) {
+			n = n.getLeft();
+		}
+		else if (k > key) {
+			n = n.getRight();
+		}
+		else {
+			found = n;
+			break;
+		}
+		found = searchStudent(k, n);
+	}
+	return found;
+}
+
+/**
+ 	* Internal method to find a course in the tree with recursion
+* @param k the id of the course
+* @param n the AVLNode to compare with
+*/
+	private AvlNode searchCourse(String k, AvlNode n) {
+	AvlNode found = null;
+	
+	while((n != null)) {
+		String key = (String)n.getKey();
+		int compare = k.compareTo(key);
+		
+		if (compare < 0) {
+			n = n.getLeft();
+		}
+		else if (compare > 0) {
+			n = n.getRight();
+		}
+		else {
+			found = n;
+			break;
+		}
+		found = searchCourse(k, n);
+	}
+	return found;
+}
+	
+	/**
 	* Rotate node with left child.
 	*/
-	public AVLNode singleLeftChild(AVLNode n) {
-		AVLNode left = n.getLeft();
+	private AvlNode singleLeftChild(AvlNode n) {
+		AvlNode left = n.getLeft();
 		n.setLeft(left.getRight());
 		left.setRight(n);
 		return left;
@@ -287,8 +355,8 @@ public class AvlTree {
 	/**
 	* Rotate node with right child.
 	*/
-	public AVLNode singleRightChild(AVLNode n) {
-		AVLNode right = n.getLeft();
+	private AvlNode singleRightChild(AvlNode n) {
+		AvlNode right = n.getLeft();
 		n.setRight(right.getLeft());
 		right.setLeft(n);
 		return right;
@@ -298,7 +366,7 @@ public class AvlTree {
 	* Rotate left child with its right child
 	* then rotate n with n's new left child
 	*/
-	public AVLNode doubleLeftChild(AVLNode n) {
+	private AvlNode doubleLeftChild(AvlNode n) {
 		n.setLeft(singleRightChild(n.getLeft()));
 		return singleLeftChild(n);
 	}
@@ -307,14 +375,15 @@ public class AvlTree {
 	* Rotate right child with its left child
 	* then rotate n with n's new right child
 	*/
-	public AVLNode doubleRightChild(AVLNode n) {
+	private AvlNode doubleRightChild(AvlNode n) {
 		n.setRight(singleLeftChild(n.getRight()));
 		return singleRightChild(n);
 	}
 	
+	/*
 	/**
 	* Search successor of node
-	*/
+	
 	public AVLNode successor(AVLNode n) {
 		AVLNode temp = n;
 		AVLNode temp2 = n.getParent();
@@ -329,6 +398,7 @@ public class AvlTree {
 		}
 		return temp2;		
 	}
+	*/
 	
 	/**
 	* Return height of the tree
@@ -340,7 +410,7 @@ public class AvlTree {
 	/**
 	* Return height of the node
 	*/
-	public int height(AVLNode n) {
+	private int height(AvlNode n) {
 		if (n == null) { 
 			return -1;
 		}
@@ -358,6 +428,38 @@ public class AvlTree {
 		}
 	}
 	
+	/**
+	* Check balance of the tree
+	* should be at most 1
+	*/
+	public int getBalance(AvlNode n) {
+		if (n == null) {
+			return 0;
+		}
+		return (height(n.getLeft()) - height(n.getRight()));
+	}
+		
+	/**
+	* Count the number of nodes
+	*/
+	public int countNodes()
+	{
+		return countNodes(root);
+	}
+	
+	/**
+	* Internal method to count the number of nodes with recursion
+	*/
+	private int countNodes(AvlNode n) {
+		if (n == null) {
+			return 0;
+		}
+		int temp = 1;
+		temp += countNodes(n.getLeft());
+		temp += countNodes(n.getRight());
+		return temp;
+	}
+			
 	/**
 	* checks which one of the two inputs is the lowest
 	*/
@@ -381,7 +483,7 @@ public class AvlTree {
 	/**
 	* Return the node with the minimum key of the subtree
 	*/ 
-	public AVLNode treeMinimum(AVLNode n) {
+	public AvlNode treeMinimum(AvlNode n) {
 		while (n.getLeft() != null) {
 			n = n.getLeft();
 		}
@@ -391,114 +493,13 @@ public class AvlTree {
 	/**
 	* Return the node with the maximum key of the subtree
 	*/
-	public AVLNode treeMaximum(AVLNode n) {
+	public AvlNode treeMaximum(AvlNode n) {
 		while (n.getRight() != null) {
 			n = n.getRight();
 		}
 		return n;
 	}
 	
-	/**
-	* Check balance of the tree
-	* should be at most 1
-	*/
-	public int getBalance(AVLNode n) {
-		if (n == null) {
-			return 0;
-		}
-		return (height(n.getLeft()) - height(n.getRight()));
-	}
-		
-	/**
-	* Count the number of nodes
-	*/
-	public int countNodes()
-	{
-		return countNodes(root);
-	}
-	
-	/**
-	* Internal method to count the number of nodes with recursion
-	*/
-	private int countNodes(AVLNode n) {
-		if (n == null) {
-			return 0;
-		}
-		int temp = 1;
-		temp += countNodes(n.getLeft());
-		temp += countNodes(n.getRight());
-		return temp;
-	}
-	
-		/**
-	* Search for a course/student in the tree
-	*/
-	public boolean search(Object k) {
-		if (k instanceof Integer) {
-			if (searchStudent((Integer)k, root) != null) {
-				return true;
-			}
-		}
-
-		if (k instanceof String) {
-			if (searchCourse((String)k, root) != null) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	* Internal method to find a student in the tree with recursion
-	* @param k the id of the student
-	* @param n the AVLNode to compare with
-	*/
-	private AVLNode searchStudent(Integer k, AVLNode n) {
-		AVLNode found = null;
-		while ((n != null)) {
-			Integer key = (Integer)n.getKey();
-			if (k < key) {
-				n = n.getLeft();
-			}
-			else if (k > key) {
-				n = n.getRight();
-			}
-			else {
-				found = n;
-				break;
-			}
-			found = searchStudent(k, n);
-		}
-		return found;
-	}
-	
-	/**
-	* Internal method to find a course in the tree with recursion
-	* @param k the id of the course
-	* @param n the AVLNode to compare with
-	*/
-	private AVLNode searchCourse(String k, AVLNode n) {
-		AVLNode found = null;
-		
-		while((n != null)) {
-			String key = (String)n.getKey();
-			int compare = k.compareTo(key);
-			
-			if (compare < 0) {
-				n = n.getLeft();
-			}
-			else if (compare > 0) {
-				n = n.getRight();
-			}
-			else {
-				found = n;
-				break;
-			}
-			found = searchCourse(k, n);
-		}
-		return found;
-	}
-		
 	/**
 	* method for String representation with keys and values of inorder traversal
 	*/	
@@ -509,7 +510,7 @@ public class AvlTree {
 	/**
 	* Internal method for inorder traversal with recursion
 	*/
-	private void inorder(AVLNode n) {
+	private void inorder(AvlNode n) {
 		if (n != null) {
 			inorder(n.getLeft());
 			if (n.getKey() instanceof Integer) {
@@ -533,7 +534,7 @@ public class AvlTree {
 	/**
 	* Internal method for preorder traversal with recursion
 	*/
-	private void preorder(AVLNode n) {
+	private void preorder(AvlNode n) {
 		if (n != null) {
 			System.out.print(n.getKey() + " ");
 			preorder(n.getLeft());
@@ -552,7 +553,7 @@ public class AvlTree {
 	/**
 	* Internal method for postorder traversal with recursion
 	*/
-	private void postorder(AVLNode n) {
+	private void postorder(AvlNode n) {
 		if (n != null) {
 			postorder(n.getLeft());
 			postorder(n.getRight());

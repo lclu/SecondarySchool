@@ -12,7 +12,7 @@ public class Student {
 	
 	
 	/** Constructor */
-	public Student(String na, Integer nu, Integer st) {
+	public Student(String na, Integer nu, int st) {
 		name = na;
 		number = nu;
 		start = st;

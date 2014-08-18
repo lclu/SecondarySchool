@@ -18,13 +18,10 @@ public class TestSystem {
 		
 		System.out.println("Student Susan = new Student(\"Susan White\", 4382, 20160901);");
 		Student Susan = new Student("Susan White", 4382, 20160901);
-		
 		System.out.println("Student James = new Student(\"James Smith\", 1843, 20140901);");
 		Student James = new Student("James Smith", 1843, 20140901);
-		
 		System.out.println("Student Mary = new Student(\"Mary Brown\", 5931, 20120901);");
 		Student Mary = new Student("Mary Brown", 5931, 20120901);
-		
 		System.out.println("Student David = new Student(\"David Miller\", 7592, 20100901);");
 		Student David = new Student("David Miller", 7592, 20100901);
 		
@@ -34,13 +31,10 @@ public class TestSystem {
 		
 		System.out.println("Course Calculus = new Course(\"Calculus\", \"TW1080\", 20150101, 20150630);");
 		Course Calculus = new Course("Calculus", "TW1080", 20150101, 20150630);
-		
 		System.out.println("Course Analysis = new Course(\"Analysis\", \"TW1070\", 20130101, 20130630);");
 		Course Analysis = new Course("Analysis", "TW1070", 20130101, 20130630);
-		
 		System.out.println("Course Algebra = new Course(\"Algebra\", \"TW1060\", 20110101, 20110630);");
 		Course Algebra = new Course("Algebra", "TW1060", 20110101, 20110630);
-		
 		System.out.println("Course Statistics = new Course(\"Statistics\", \"TW1050\", 20090101, 20090630);");
 		Course Statistics = new Course("Statistics", "TW1050", 20090101, 20090630);
 				
@@ -72,6 +66,7 @@ public class TestSystem {
 		
 		System.out.println("David is in the system: " + secondary.search(David));
 		System.out.println("Mary is in the system: " + secondary.search(Mary));
+		System.out.println("James is in the system: " + secondary.search(James));
 		
 		System.out.println();
 
@@ -98,11 +93,11 @@ public class TestSystem {
 		
 		//System.out.println("secondary.removeStudent(Susan); " + secondary.removeStudent(Susan) + "\n");
 		
-		System.out.println(secondary.students.searchStudent((Integer)4382, secondary.students.getRoot()));
-		System.out.println(secondary.students.searchStudent((Integer)5931, secondary.students.getRoot()));
+		//System.out.println(secondary.students.searchStudent((Integer)4382, secondary.students.getRoot()));
+		//System.out.println(secondary.students.searchStudent((Integer)5931, secondary.students.getRoot()));
 		
-		System.out.println("secondary.students.remove(4382)");
-		System.out.println(secondary.students.remove(4382));
+		//System.out.println("secondary.students.remove(4382)");
+		//System.out.println(secondary.students.remove(4382));
 		
 		System.out.println("4382 is in the system: " + secondary.search(4382));
 		System.out.println("7592 is in the system: " + secondary.search(7592));
