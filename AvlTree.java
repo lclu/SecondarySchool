@@ -59,19 +59,19 @@ public class AvlTree {
 	* Internal method to insert the node for Students recursively.
 	* @param m the node to insert
 	* @param n the node that roots the subtree
-	* @return the inserted node
+	* @return node n
 	*/
 	private AvlNode insertStudent(AvlNode m, AvlNode n) {
 		if (n == null) { //tree is empty
 			n = m;
 		}
 		
-		else if ((int)m.getKey() < (int)n.getKey()) {
+		if ((Integer)m.getKey() < (Integer)n.getKey()) {
 			
 			n.setLeft(insertStudent(m,n.getLeft())); //recursion
-			m.setParent(n);
+			//m.setParent(n);
 			if (height(n.getLeft()) - height(n.getRight()) == 2) { //check if rebalance needed
-				if ((int)m.getKey() < (int)n.getLeft().getKey()) {
+				if ((Integer)m.getKey() < (Integer)n.getLeft().getKey()) {
 					n = singleLeftChild(n);
 				}
 				else {
@@ -80,12 +80,12 @@ public class AvlTree {
 			}
 		}
 		
-		else if ((int)m.getKey() > (int)n.getKey()) {
+		else if ((Integer)m.getKey() > (Integer)n.getKey()) {
 			
 			n.setRight(insertStudent(m,n.getRight())); //recursion
-			m.setParent(n);
+			//m.setParent(n);
 			if (height(n.getRight()) - height(n.getLeft()) == 2) { //check if rebalance needed
-				if ((int)m.getKey() > (int)n.getRight().getKey()) {
+				if ((Integer)m.getKey() > (Integer)n.getRight().getKey()) {
 					n = singleRightChild(n);
 				}
 				else {
@@ -103,7 +103,7 @@ public class AvlTree {
 	* @return the inserted node
 	*/
 	private AvlNode insertCourse(AvlNode m, AvlNode n) {
-		if (n == null) {
+		if (n == null) { //tree is empty
 			n = m;
 		}
 		
@@ -111,11 +111,11 @@ public class AvlTree {
 		String b = (String)n.getKey();
 		int compare = a.compareTo(b);
 		
-		if (compare < 0) {
+		if (compare < 0) { //a is smaller
 			
-			n.setLeft(insertCourse(m,n.getLeft()));
-			m.setParent(n);
-			if (height(n.getLeft()) - height(n.getRight()) == 2) {
+			n.setLeft(insertCourse(m,n.getLeft())); //recursion
+			//m.setParent(n);
+			if (height(n.getLeft()) - height(n.getRight()) == 2) { //check if rebalance needed
 				String c = (String)n.getLeft().getKey();
 				int compare2 = a.compareTo(c);
 				
@@ -128,11 +128,11 @@ public class AvlTree {
 			}
 		}
 		
-		else if (compare > 0) {
+		else if (compare > 0) { //a is bigger
 			
-			n.setRight(insertCourse(m,n.getRight()));
-			m.setParent(n);
-			if (height(n.getRight()) - height(n.getLeft()) == 2) {
+			n.setRight(insertCourse(m,n.getRight())); //recursion
+			//m.setParent(n);
+			if (height(n.getRight()) - height(n.getLeft()) == 2) { //check if rebalance needed
 				String c = (String)n.getRight().getKey();
 				int compare3 = a.compareTo(c);
 				
@@ -233,15 +233,18 @@ public class AvlTree {
 	private AvlNode removeFound(AvlNode n) {
 		// n has 0 children
 		if (n.getLeft() == null && n.getRight() == null) {
+			n.setParent(null);
 			return null;
 		}
 		// n has 1 child - will be balanced after removal
 		else if (n.getLeft() == null) {
-			n.getRight().setParent(n.getParent());
+			n.getRight().setParent(n.getParent()); //remove n from tree
+			n.setParent(null); //link n to nothing
 			return n.getRight();
 		}
 		else if (n.getRight() == null) {
-			n.getLeft().setParent(n.getParent());
+			n.getLeft().setParent(n.getParent()); //remove n from tree
+			n.setParent(null); //link n to nothing
 			return n.getLeft();
 		}
 		// n has 2 children
@@ -249,7 +252,12 @@ public class AvlTree {
 			AvlNode temp = treeMinimum(n.getRight());
 			n.setKey(temp.getKey());
 			n.setValue(temp.getValue());
-			n.setRight(removeStudent(n.getRight(), temp));
+			if (n.getKey() instanceof Integer) {
+				n.setRight(removeStudent(n.getRight(), temp));
+			}
+			if (n.getKey() instanceof String) {
+				n.setRight(removeCourse(n.getRight(), temp));
+			}
 		}
 	
 		// check balance tree

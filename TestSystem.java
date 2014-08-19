@@ -64,16 +64,15 @@ public class TestSystem {
 		secondary.toStringStudents();
 		System.out.println();
 		
-		System.out.println("David is in the system: " + secondary.search(David));
-		System.out.println("Mary is in the system: " + secondary.search(Mary));
-		System.out.println("James is in the system: " + secondary.search(James));
+		System.out.println("David (7592) is in the system: " + secondary.search(7592));
+		System.out.println("Mary (5931) is in the system: " + secondary.search(5931));
 		
 		System.out.println();
 
 		System.out.println("secondary.addCourse(Calculus); " + secondary.addCourse(Calculus));
 		System.out.println("secondary.addCourse(Analysis); " + secondary.addCourse(Analysis));
-		System.out.println("secondary.addCourse(Algebra); " + secondary.addCourse(Algebra));
-		System.out.println("secondary.addCourse(Statistics); " + secondary.addCourse(Statistics));
+		//System.out.println("secondary.addCourse(Algebra); " + secondary.addCourse(Algebra));
+		//System.out.println("secondary.addCourse(Statistics); " + secondary.addCourse(Statistics));
 					
 		System.out.println();
 		
@@ -91,7 +90,7 @@ public class TestSystem {
 		//second test
 		System.out.println("-- Test 2: Removing students and courses from the system: \n");
 		
-		//System.out.println("secondary.removeStudent(Susan); " + secondary.removeStudent(Susan) + "\n");
+		System.out.println("secondary.removeStudent(Susan); " + secondary.removeStudent(Susan) + "\n");
 		
 		//System.out.println(secondary.students.searchStudent((Integer)4382, secondary.students.getRoot()));
 		//System.out.println(secondary.students.searchStudent((Integer)5931, secondary.students.getRoot()));
@@ -99,9 +98,9 @@ public class TestSystem {
 		//System.out.println("secondary.students.remove(4382)");
 		//System.out.println(secondary.students.remove(4382));
 		
-		System.out.println("4382 is in the system: " + secondary.search(4382));
-		System.out.println("7592 is in the system: " + secondary.search(7592));
-		System.out.println("5931 is in the system: " + secondary.search(5931));
+		System.out.println("Susan (4382) is in the system: " + secondary.search(4382));
+		System.out.println("David (7592) is in the system: " + secondary.search(7592));
+		System.out.println("Mary (5931) is in the system: " + secondary.search(5931));
 		
 		System.out.println("Number of students: " + secondary.numberStudents() + "\n");
 		
@@ -120,6 +119,7 @@ public class TestSystem {
 		
 		//empty system
 		System.out.println("- Empty the system.");
+		System.out.println("secondary.makeEmpty();");
 		secondary.makeEmpty();
 		System.out.println();
 		

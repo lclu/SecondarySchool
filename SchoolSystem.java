@@ -34,18 +34,17 @@ public class SchoolSystem {
 	
 	public boolean addStudent(Student v) {
 		
-		if (students.insert(v.getNumber(), v)) {
-			return true;
-		}
-		return false;
+		return students.insert(v.getNumber(), v);
 	}
 	
 	public boolean addCourse(Course v) {
+		
 		return courses.insert(v.getId(), v);
 	}
 	
 	public boolean removeStudent(Student v) {
-		return (students.remove(v.getNumber()).getValue() instanceof Student);
+		AvlNode temp = students.remove(v.getNumber());
+		return (temp.getValue() instanceof Student);
 	}
 	
 	public boolean removeCourse(Course v) {
